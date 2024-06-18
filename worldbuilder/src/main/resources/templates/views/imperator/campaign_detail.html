@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html data-navigation-type="horizontal" data-navbar-horizontal-shape="default" lang="en-US" dir="ltr" class="chrome windows fontawesome-i2svg-active fontawesome-i2svg-complete" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>imperator rome</title>
+    		    <script th:inline="javascript">
+		/*<![CDATA[*/
+		   var groupUnitList = /*[[${groupUnitList}]]*/ [];
+		/*]]>*/
+		</script>
+    <link th:href="@{/assets/css/theme.min.css}" type="text/css" rel="stylesheet" id="style-default">
+    <link th:href="@{/assets/css/user.min.css}" type="text/css" rel="stylesheet" id="user-style-default">
+  </head>
+
+
+  <body>
+    <main class="main" id="top">
+		<!--TOPBAR  -->
+      <div th:replace="~{fragments/imperator/topbar :: TopBar}"></div>
+      <!--MainContent-->
+      <div th:replace="~{fragments/imperator/campaign_detail :: MainContent}"></div>   
+
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}"></script>
+    <script th:src="@{/main/js/campaign_detail.js}"></script>
+</body></html>

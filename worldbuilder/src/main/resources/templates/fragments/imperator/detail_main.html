@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+		<div class="content" th:fragment="MainContent">
+			
+			<div class="modal fade" id="success_alert_detail" tabindex="-1" role="dialog" style="z-index: 1080;">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-success">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="success_alert_title">registration successful!</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-footer">
+			        <button class="btn btn-outline-success" type="button" data-bs-dismiss="modal">ok</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="modal fade" id="delete_confirmation_modal" tabindex="-1" role="dialog" style="z-index: 1080;">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-danger">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="success_alert_title">do you really want to delete the group?</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-footer">
+					 <button class="btn btn-outline-success" type="button" data-bs-dismiss="modal">nope</button>
+			        <button class="btn btn-outline-danger" type="button" data-bs-dismiss="modal" id ="delete_group_confirm_complete">delete</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="modal fade" id="fail_alert_detail" tabindex="-1" role="dialog" style="z-index: 1080;">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-danger">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="fail_alert_title">registration failed</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-footer">
+			        <button class="btn btn-outline-danger" type="button" data-bs-dismiss="modal">ok</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="modal fade" id="fail_login_detail" tabindex="-1" role="dialog" style="z-index: 1080;">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-danger">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="fail_alert_title">login failed</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-footer">
+			        <button class="btn btn-outline-danger" type="button" data-bs-dismiss="modal">ok</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
+				<div class="modal fade" id="new_counter_modal" tabindex="-1" role="dialog" style="z-index: 1060;">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-success">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="success_alert_title">update counter</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-body">
+					  <p class="text-danger">input value [-100 , 100] only integer</p>
+					 <select id="defender_id" class="form-select" aria-label="Default select example">
+						  <option value="-1">Select Unit</option>
+					    <!-- Iterate over the list of units -->
+					    <th:block th:each="unit : ${groupUnitList}">
+					        <option th:value="${unit.id}" th:text="${unit.name}"></option>
+					    </th:block>
+					</select>
+					  <input class="form-control mt-3" id="damage_value" type="number"/>
+				  </div>
+			      <div class="modal-footer">
+			        <button class="btn btn-success" id="counter_update_confirm" type="button" data-bs-dismiss="modal">update</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>	
+			
+			<div class="modal fade" id="add_unit_modal" tabindex="-1" role="dialog">
+				 <div class="modal-dialog modal-lg" >
+					<div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white dark__text-gray-1100" >New Unit</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 800px; overflow-y: auto;">
+				   <button class="btn btn-primary mt-2 mb-2"style="width:100%;" id="add_unit_confirm" >register</button>
+				
+				
+  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">name</label>
+					
+					    <input class="form-control" id="name" type="text"/>
+					  </div>
+					  <div class="mb-2">
+					
+					    <label class="form-label fs-9" for="basic-form-name">cost</label>
+					
+					    <input class="form-control" id="cost" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">dicipline</label>
+					    <input class="form-control" id="dicipline" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">attack</label>
+					    <input class="form-control" id="attack" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">defence</label>
+					    <input class="form-control" id="defence" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">morale_taken</label>
+					    <input class="form-control" id="morale_taken" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">str_taken</label>
+					    <input class="form-control" id="str_taken" type="number"/>
+					  </div>
+					    <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">mountain_combat</label>
+					    <input class="form-control" id="mountain_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">hill_combat</label>
+					    <input class="form-control" id="hill_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">marsh_combat</label>
+					    <input class="form-control" id="marsh_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">desert_combat</label>
+					    <input class="form-control" id="desert_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">desert_hill_combat</label>
+					    <input class="form-control" id="desert_hill_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">jungle_combat</label>
+					    <input class="form-control" id="jungle_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">forest_combat</label>
+					    <input class="form-control" id="forest_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">plain_combat</label>
+					    <input class="form-control" id="plain_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">farmland_combat</label>
+					    <input class="form-control" id="farmland_combat" type="number"/>
+					  </div>
+					   <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">oasis_combat</label>
+					    <input class="form-control" id="oasis_combat" type="number"/>
+					  </div>
+							
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detail_unit_modal" tabindex="-1" role="dialog">
+				 <div class="modal-dialog modal-lg" >
+					<div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white dark__text-gray-1100" >Unit Detail</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 800px; overflow-y: auto;">
+  <div class="mb-2">
+	 
+							   <button class="btn btn-primary mt-2 mb-2" style="width:100%;"  th:if="${isAuthor}" id="update_unit_confirm" >update detail</button>
+							    <button class="btn btn-danger mt-2 mb-2" style="width:100%;" th:if="${isAuthor}" id="delete_unit_confirm" >delete</button> 
+							    <button class="btn btn-success mt-2 mb-2" style="width:100%;" th:if="${isAuthor}" id="add_counter_btn" >update counter</button>
+					     <hr class="divider">
+					 <hr class="divider">
+					   
+					    <label class="form-label fs-9" for="basic-form-name">name</label>
+					
+					    <input class="form-control" id="detail_name" type="text"/>
+					    <input style="display:none;" class="form-control" id="detail_id" type="text"/>
+					  </div>
+					  <div class="mb-2">
+					
+					    <label class="form-label fs-9" for="basic-form-name">cost</label>
+					
+					    <input class="form-control" id="detail_cost" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">dicipline</label>
+					    <input class="form-control" id="detail_dicipline" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">attack</label>
+					    <input class="form-control" id="detail_attack" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">defence</label>
+					    <input class="form-control" id="detail_defence" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">morale_taken</label>
+					    <input class="form-control" id="detail_morale_taken" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">str_taken</label>
+					    <input class="form-control" id="detail_str_taken" type="number"/>
+					  </div>
+					 <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">mountain_combat</label>
+					    <input class="form-control" id="detail_mountain_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">hill_combat</label>
+					    <input class="form-control" id="detail_hill_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">marsh_combat</label>
+					    <input class="form-control" id="detail_marsh_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">desert_combat</label>
+					    <input class="form-control" id="detail_desert_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">desert_hill_combat</label>
+					    <input class="form-control" id="detail_desert_hill_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">jungle_combat</label>
+					    <input class="form-control" id="detail_jungle_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">forest_combat</label>
+					    <input class="form-control" id="detail_forest_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">plain_combat</label>
+					    <input class="form-control" id="detail_plain_combat" type="number"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">farmland_combat</label>
+					    <input class="form-control" id="detail_farmland_combat" type="number"/>
+					  </div>
+					   <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">oasis_combat</label>
+					    <input class="form-control" id="detail_oasis_combat" type="number"/>
+					  </div>
+					   <div class="mb-2">
+						     <label class="form-label fs-9" for="basic-form-name">Counters</label>
+					  </div>
+					  <div class="mb-2" id = "counter_buttons">
+					  </div>
+					  
+					
+            </div>
+        </div>
+    </div>
+</div>	
+
+<div class="modal fade" id="battle_report_modal" tabindex="-1" role="dialog">
+				 <div class="modal-dialog modal-xl" >
+					<div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white dark__text-gray-1100" >Battle Report</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 800px; overflow-y: auto;">
+				<div class="row" id="battle_report_card">
+
+					
+					
+					
+					
+               </div>
+            </div>
+        </div>
+    </div>
+</div>	
+
+
+
+
+        <div class="mb-9">
+          <div class="row g-3 mb-4">
+            <div class="col-auto">
+              <h2 class="mb-0">Balance Detail</h2>
+               <button class="btn btn-warning" style="display:none;" id="balance_check_btn" >Balance Check</button> 
+            </div>
+            <div class="col-12">	
+					<div class="row">
+						
+						 <div class="col-md-5 mt-2" th:if="${!isAuthor}">
+							<div class="form-group d-flex align-items-center">
+							    <input class="form-control" id="author_password" type="password">
+							    <button class="btn btn-primary ms-4" id="login">Login</button>
+							</div>
+						</div>
+						
+						
+						<div class="col-6 col-md-3 mt-2"  th:if="${isAuthor}">
+                  <button class="btn btn-primary" style="width:100%;" id="add_product_button">add new unit</button>
+                	</div>
+                	<div class="col-6 col-md-3 mt-2"  th:if="${isAuthor}">
+					  <button class="btn btn-danger" style="width:100%;" id="delete_group_confirm" >Delete group</button>
+				   </div>
+				   <div class="col-md-5 mt-2">
+					    <select id="terrain_select" class="form-select fs-8 "  aria-label="Default select example">
+						  <option value="default" class="fs-8">no terrain</option>
+					        <option value="mountain" class="fs-8">mountain</option>
+					        <option value="hill" class="fs-8">hill</option>
+					        <option value="marsh" class="fs-8">marsh</option>
+					        <option value="desert" class="fs-8">desert</option>
+					        <option value="desert_hill" class="fs-8">desert_hill</option>
+					        <option value="jungle" class="fs-8">jungle</option>
+					        <option value="forest" class="fs-8">forest</option>
+					        <option value="plain" class="fs-8">plain</option>
+					        <option value="farmland" class="fs-8">farmland</option>
+					        <option value="oasis" class="fs-8">oasis</option>			    
+					</select> 
+					</div>
+                	 </div>
+                </div>
+          </div>
+         	<input type="hidden" id="group_id" th:value="${group_id}">
+         <table class="table table-sm table-striped">
+  <thead>
+    <tr>
+		<th scope="col"></th>
+	  <th scope="col">Name</th>
+	       <th scope="col">Morale Win</th>
+      <th scope="col">Manpower Win</th>
+       <th scope="col">Manpower Eff</th>
+      <th scope="col">Manpower Eff/Cost</th>
+      <th scope="col">Morale Eff</th>
+      <th scope="col">Morale Eff/Cost</th>
+
+       <th scope="col">Overall Eff</th>
+      <th scope="col">Overall Eff/Cost</th>
+     
+      
+      <th scop="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+     <tr th:each="groupUnit : ${groupUnitList}" th:id="${'row-' + groupUnit.id}">
+		 <td class="align-middle"> <input class="unit_checkbox" id="flexCheckChecked" type="checkbox" th:value="${groupUnit.id}" checked="" /></td>
+	    <td th:value="${groupUnit.id}" th:text="${groupUnit.name}" class="unit_name align-middle fw-semibold text-body-highlight"></td>
+	   	 <td class="win align-middle fw-semibold"></td>
+	    <td class="win_trade align-middle fw-semibold "></td>
+	    <td class="stat_text casualty align-middle fw-semibold "></td>
+	    <td class="stat_text casualty_bycost align-middle fw-semibold "></td>
+	    <td class="stat_text morale align-middle fw-semibold "></td>
+	    <td class="stat_text morale_bycost align-middle fw-semibold "></td>
+	    <td class="stat_text overall align-middle fw-semibold"></td>
+	    <td class="stat_text overall_bycost align-middle fw-semibold"></td>
+    <td><button class="btn btn-warning me-1 detail_battle" style="width:100%;">match detail</button><button class="btn btn-success detail_unit mt-1" style="width:100%;">unit detail</button></td>
+</tr>
+  </tbody>
+</table>
+         
+         
+         
+        </div>
+        
+      </div>
+        </html>

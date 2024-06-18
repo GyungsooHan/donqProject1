@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.worldbuilder.v1.mapper.BalanceGroupMapper">
+	<!-- select -->
+		<select id="getAllBalanceGroup" resultType="com.worldbuilder.v1.vo.BalanceGroupVO">
+			SELECT id, 
+		   		   name, 
+		   		   author,
+		   		   reg_date,
+		   		   last_update,
+		   		   status
+			FROM balance_group WHERE status='active'
+		</select>
+		
+			<select id="getAllCampaign" resultType="com.worldbuilder.v1.vo.CampaignVO">	
+				SELECT 
+			id, campaign_name, campaign_start, campaign_end, admin_pw, admin, status
+			FROM imperator.campaigns
+		</select>
+		
+		<select id="getCounterVObyUnit" parameterType="integer" resultType="com.worldbuilder.v1.vo.CounterVO">
+			SELECT c.id,
+			       c.attacker_id,
+			       c.defender_id,
+			       c.damage_value,
+			       u.name as defender_name
+			FROM counters c
+			INNER JOIN units u ON c.defender_id = u.id
+			WHERE c.attacker_id = #{attacker_id} AND c.damage_value != 0 AND u.status!='deleted'
+		</select>
+		<select id="searchExistingCounter" parameterType="com.worldbuilder.v1.vo.CounterVO" resultType="com.worldbuilder.v1.vo.CounterVO">
+			SELECT id,
+			       attacker_id,
+			       defender_id,
+			       damage_value
+			FROM counters 
+			WHERE attacker_id = #{attacker_id} AND defender_id = #{defender_id}
+		</select>
+		
+	<select id="getAllGroupUnitByGroupId" parameterType="integer" resultType="com.worldbuilder.v1.vo.GroupUnitVO">
+    SELECT id, group_id, name, cost, dicipline, attack, defence, morale_taken, str_taken,
+        mountain, hill, marsh, desert, desert_hill, jungle, plain, farmland, oasis,forest
+    FROM imperator.units 
+    WHERE group_id=#{group_id} AND status='active';
+</select>
+
+    <insert id="insertBalanceGroup" parameterType="com.worldbuilder.v1.vo.BalanceGroupVO">
+        INSERT INTO balance_group (name, author, reg_date, last_update, password, status)
+        VALUES (#{name}, #{author}, NOW(), NOW(), #{password}, 'active')
+    </insert>
+      <insert id="insertCampaign" parameterType="com.worldbuilder.v1.vo.CampaignVO">
+        INSERT INTO campaigns (id, campaign_name, campaign_start, admin_pw, admin, status)
+        VALUES (#{id}, #{campaign_name}, #{campaign_start}, #{admin_pw}, #{admin}, 'active')
+    </insert>
+    
+
+		     <update id="deleteBalanceGroup" parameterType="com.worldbuilder.v1.vo.BalanceGroupVO">
+		    UPDATE balance_group
+		    SET status='deleted'
+		    WHERE id = #{id}
+		</update>
+		
+		  <update id="deleteCampaign" parameterType="com.worldbuilder.v1.vo.CampaignVO">
+		    UPDATE campaigns
+		    SET status='deleted'
+		    WHERE id = #{id}
+		</update>
+		
+		 <update id="updateCampaign" parameterType="com.worldbuilder.v1.vo.CampaignVO">
+		    UPDATE imperator.campaigns
+				SET campaign_name=#{campaign_name}, campaign_start=#{campaign_start}, campaign_end=#{campaign_end}, admin_pw=#{admin_pw}, admin=#{admin}, status=#{status}
+				WHERE id=#{id}
+		</update>
+    
+  <insert id="insertGroupUnit" parameterType="com.worldbuilder.v1.vo.BalanceGroupVO">
+    INSERT INTO imperator.units
+        (group_id, name, cost, dicipline, attack, defence, morale_taken, str_taken, status,
+        mountain, hill, marsh, desert, desert_hill, jungle, plain, farmland, oasis,forest)
+        VALUES
+        (#{group_id}, #{name}, #{cost}, #{dicipline}, #{attack}, #{defence}, #{morale_taken}, #{str_taken}, 'active',
+        #{mountain}, #{hill}, #{marsh}, #{desert}, #{desert_hill}, #{jungle}, #{plain}, #{farmland}, #{oasis},#{forest})
+</insert>
+    
+    
+    <update id="updateGroupUnit" parameterType="com.worldbuilder.v1.vo.BalanceGroupVO">
+    UPDATE imperator.units
+    SET name = #{name},
+        cost = #{cost},
+        dicipline = #{dicipline},
+        attack = #{attack},
+        defence = #{defence},
+        morale_taken = #{morale_taken},
+        str_taken = #{str_taken},
+        mountain = #{mountain},
+        hill = #{hill},
+        marsh = #{marsh},
+        desert = #{desert},
+        desert_hill = #{desert_hill},
+        jungle = #{jungle},
+        plain = #{plain},
+        farmland = #{farmland},
+        oasis = #{oasis},
+        forest =#{forest}
+    WHERE id = #{id};
+</update>
+    <update id="deleteGroupUnit" parameterType="com.worldbuilder.v1.vo.BalanceGroupVO">
+    UPDATE imperator.units
+    SET status='deleted'
+    WHERE id = #{id};
+</update>
+
+	<select id="verifyAuthor" parameterType="com.worldbuilder.v1.vo.BalanceGroupVO" resultType="com.worldbuilder.v1.vo.BalanceGroupVO">
+			SELECT id, 
+		   		  password
+			FROM balance_group WHERE status='active' AND id=#{id}
+	</select>
+
+    <update id="updateCounter" parameterType="com.worldbuilder.v1.vo.CounterVO">
+    UPDATE imperator.counters
+    SET damage_value= #{damage_value}
+    WHERE id = #{id}
+</update>
+ <insert id="insertCounter" parameterType="com.worldbuilder.v1.vo.CounterVO">
+    INSERT INTO imperator.counters (attacker_id, defender_id, damage_value)
+        VALUES (#{attacker_id}, #{defender_id}, #{damage_value})
+</insert>
+
+
+
+
+
+
+</mapper>

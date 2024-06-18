@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+		<div class="content" th:fragment="MainContent">
+				<div class="mb-9">
+          <div class="row g-3 mb-4">
+            <div class="col-auto">
+              <h2 class="mb-0">Imperator Save Importer</h2>
+            </div>
+                </div>
+          </div>
+		 <input type="file" id="fileInput">
+		<pre id="output"></pre>
+		<button id="downloadButton" style="display:none;">excel download</button>
+		  <div id="cardContainer" class="mt-5">
+			
+	
+		</div>
+		<div class="container mt-5">
+			  <div class="row">
+			    <div class="col-md-12">
+			      <table id="dataTable" class="table">
+			        <thead>
+			          <tr>
+			            <th>Player</th>
+						<th>Country</th>
+						<th>Avg Tech</th>
+						<th>Holdings</th>
+						<th>Cohorts</th>
+						<th>Population</th>
+						<th>Manpower Rec.</th>
+						<th>Max Manpower</th>
+						<th>Income</th>
+						<th>Gold</th>
+						<th>Stability</th>
+						<th>AE</th>
+						<th>Religious Unity</th>
+						<th>Tyranny</th>
+						<th>War Exhaustion</th>
+			          </tr>
+			        </thead>
+			        <tbody></tbody>
+			      </table>
+			    </div>
+			  </div>
+			</div>
+        </div>
+
+        </html>

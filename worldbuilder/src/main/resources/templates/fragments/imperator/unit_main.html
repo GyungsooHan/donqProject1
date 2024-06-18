@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+		<div class="content" th:fragment="MainContent">
+			
+			<div class="modal fade" id="success_alert" tabindex="-1" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-success">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="success_alert_title">registration successful!</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-footer">
+			        <button class="btn btn-outline-success" type="button" data-bs-dismiss="modal">ok</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="modal fade" id="fail_alert" tabindex="-1" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-danger">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="fail_alert_title">registration failed</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-footer">
+			        <button class="btn btn-outline-danger" type="button" data-bs-dismiss="modal">ok</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="modal fade" id="add_group_modal" tabindex="-1" role="dialog">
+				 <div class="modal-dialog modal-lg" >
+					<div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white dark__text-gray-1100" >New Balance Group</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 800px; overflow-y: auto;">
+  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">name</label>
+					
+					    <input class="form-control" id="name" type="text"/>
+					  </div>
+					  <div class="mb-2">
+					
+					    <label class="form-label fs-9" for="basic-form-name">author</label>
+					
+					    <input class="form-control" id="author" type="text"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">password</label>
+					    <input class="form-control" id="password" type="password"/>
+					  </div>
+							   <button class="btn btn-primary" id="add_group_confirm" style="width:100%;" >register</button>
+            </div>
+        </div>
+    </div>
+</div>
+			<div class="mb-9">
+          <div class="row g-3 mb-4">
+            <div class="col-auto">
+              <h2 class="mb-0">Imperator Unit Balance Checker</h2>
+            </div>
+            <div class="col-12">	
+					<div class="row">
+						
+						<div class="col-md-6">
+		                  <button class="btn btn-primary" id="add_product_button" style="width:100%;">Add New Balance Group</button>
+		                </div>
+					</div>
+                	 </div>
+                </div>
+          </div>
+         	<input type="hidden" id="group_id" th:value="${group_id}">
+         <table class="table table-sm table-striped">
+  <thead>
+    <tr>
+	  <th scope="col">id</th>
+      <th scope="col">group name</th>
+      <th scope="col">author</th>
+      <th scope="col">reg date</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+   <tbody class="list" id="order-table-body">
+					 <tr th:each="balanceGroup : ${balanceGroupList}" class="detail_group" style="cursor: pointer;">
+					  <td th:text="${balanceGroup.id}" class="hw_product_status id align-middle fw-semibold"></td>
+					  <td th:text="${balanceGroup.name}" class="hw_product_status name align-middle fw-semibold text-body-highlight"></td>
+                      <td th:text="${balanceGroup.author}" class="hw_product_name mass align-middle fw-semibold text-body-highlight"></td>
+                      <td th:text="${balanceGroup.reg_date}" class="hw_product_name brain align-middle fw-semibold text-body-highlight"></td>
+                      <td><button class="btn btn-success">detail</button></td>
+                    </tr></tbody>
+</table>
+        </div>
+      </div>
+        </html>

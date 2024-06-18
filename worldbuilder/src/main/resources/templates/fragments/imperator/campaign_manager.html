@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+		<div class="content" th:fragment="MainContent">
+			
+			<div class="modal fade" id="success_alert" tabindex="-1" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-success">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="success_alert_title">registration successful!</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-footer">
+			        <button class="btn btn-outline-success" type="button" data-bs-dismiss="modal">ok</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="modal fade" id="fail_alert" tabindex="-1" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header bg-danger">
+			        <h5 class="modal-title text-white dark__text-gray-1100" id="fail_alert_title">registration failed</h5>
+			        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs-9 text-white dark__text-gray-1100"></span></button>
+			      </div>
+			      <div class="modal-footer">
+			        <button class="btn btn-outline-danger" type="button" data-bs-dismiss="modal">ok</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<div class="modal fade" id="add_group_modal" tabindex="-1" role="dialog">
+				 <div class="modal-dialog modal-lg" >
+					<div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white dark__text-gray-1100" >New Campaign</h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 800px; overflow-y: auto;">
+  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">Campaign Name</label>
+					
+					    <input class="form-control" id="campaign_name" type="text"/>
+					  </div>
+					  <div class="mb-2">
+					
+					    <label class="form-label fs-9" for="basic-form-name">Admin</label>
+					
+					    <input class="form-control" id="admin" type="text"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">Password</label>
+					    <input class="form-control" id="admin_pw" type="password"/>
+					  </div>
+					  <div class="mb-2">
+					    <label class="form-label fs-9" for="basic-form-name">start date</label>
+					    <input class="form-control" id="start_date" type="date"/>
+					  </div>
+					  
+							   <button class="btn btn-primary" id="add_group_confirm" style="width:100%;" >register</button>
+            </div>
+        </div>
+    </div>
+</div>
+			<div class="mb-9">
+          <div class="row g-3 mb-4">
+            <div class="col-auto">
+              <h2 class="mb-0">Imperator Campaign Manager</h2>
+            </div>
+            <div class="col-12">	
+					<div class="row">
+						
+						<div class="col-md-6">
+		                  <button class="btn btn-primary" id="add_product_button" style="width:100%;">Add New Campaign</button>
+		                </div>
+					</div>
+                	 </div>
+                </div>
+          </div>
+         <table id="campaignTable" class="table table-sm table-striped" >
+  <thead>
+    <tr>
+		 <th scope="col">id</th>
+	  <th scope="col">campaign_name</th>
+      <th scope="col">admin</th>
+      <th scope="col">campaign_start</th>
+      <th scope="col">campaign_end</th>
+      <th scope="col">status</th>
+      <th scope="col"></th>
+    </tr>
+    
+  </thead>
+   <tbody class="list" id="order-table-body">
+					 <tr>
+                    </tr></tbody>
+</table>
+  <table id="sessionTable" class="table table-sm table-striped" style="display:none;">
+  <thead>
+    <tr>
+		 <th scope="col">id</th>
+	  <th scope="col">date</th>
+      <th scope="col">session_name</th>
+      <th scope="col">status</th>
+      <th scope="col">campaign_id</th>
+      <th scope="col"></th>
+    </tr>
+    
+  </thead>
+   <tbody class="list" id="order-table-body">
+					 <tr>
+                    </tr></tbody>
+</table>
+      <table id="detailTable" class="table table-sm table-striped" style="display:none;">
+  <thead>
+    <tr>
+		 <th>Player</th>
+						<th>Country</th>
+						<th>Avg Tech</th>
+						<th>Holdings</th>
+						<th>Cohorts</th>
+						<th>Population</th>
+						<th>Manpower Rec.</th>
+						<th>Max Manpower</th>
+						<th>Income</th>
+						<th>Gold</th>
+						<th>Stability</th>
+						<th>AE</th>
+						<th>Religious Unity</th>
+						<th>Tyranny</th>
+						<th>War Exhaustion</th>
+    </tr>
+    
+  </thead>
+   <tbody class="list" id="order-table-body">
+					 <tr>
+                    </tr></tbody>
+</table>
+        </div>
+      </div>
+        </html>
