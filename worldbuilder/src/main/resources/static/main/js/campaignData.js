@@ -1,63 +1,115 @@
 let finalData = {};
 let dataArray = [];
+let workingData = {};
+
 $(document).ready(function() {
             
-         function parseImperatorRomeSave(fileContents,parsedData,type) {
+            
+            
+            //layer1
+         function parseImperatorRomeSave_layer1(fileContents) {
             const lines = fileContents.split('\n');
-			 let bracketLevel =0;
-			 let bracketStarts = false;
-			 let bracketLine ="";
-			 let bracketKey = "";
-			 let workingData = {};
-            for (let line of lines) {				
-                line = line.trim();   
+            let type = "";
+            let bracket = "";
+  			  let bracketLevel = 0;
+  			  let isRecording = 0;
+  			  let currentKey = '';
+  			  let record_line = [];
+  			  
+            for (let line of lines) {		
+                line = line.trim(); 
                 bracketLevel = bracketChecker(line,bracketLevel);
-                if(bracketStarts &&bracketLevel!=0){
-					bracketLine += '\n'+ line;
-					}else if(bracketStarts&&bracketLevel==0){
-						bracketStarts=false;
-						
-						if(bracketKey=='played_country'){
-						    if (!Array.isArray(workingData[bracketKey])) {
-						        workingData[bracketKey] = [];
-						    }
-						    workingData[bracketKey].push(bracketLine);
-					   }else if(bracketKey=='country'||type=='country'){
-						 workingData[bracketKey] = bracketLine;
-						 }
-						 bracketLine='';
-					}
-                if (line.includes('=')&&line.includes('{')&&!bracketStarts) {
+                if (line.includes('=')) {
+                   type = "value_assign";
+                }
+              if(line.includes('{')){
+					bracket = "open";
+				}else if(line.includes('}')){
+					bracket = "close"
+				}else{
+					bracket = "none";
+				} 
+				if(type=="value_assign"&&bracket=="open"&&bracketLevel==1){
+					const keyValue = line.split('=');
+					const key = keyValue[0];
+	              //finalData[key] = {};  
+	              currentKey = key;
+	              isRecording = 1;
+				}
+				if(isRecording ==1){
+					record_line.push(line); 
+				}
+				if(bracketLevel==1 && bracket=="close"){
+					isRecording==0;
+					finalData[currentKey] = record_line;
+					record_line = [];
+				}
+				
+				
+				if (type=="value_assign"&& bracket=="none" && bracketLevel==0) {
                     const keyValue = line.split('=');
-                    const key = keyValue[0].trim();
-                    var value = keyValue[1].trim();
-                     currentBracketKey = key;
-                    // Handle strings
-                    if (value.startsWith('"') && value.endsWith('"')) {
-                        value = value.slice(1, -1);
-                    }
-               			bracketStarts = true;
-               			bracketKey = key;
-                	}
-                else if (line.includes('=')&&!line.includes('{')&&bracketLevel==0) {
-                    const keyValue = line.split('=');
-                    const key = keyValue[0].trim();
-                    var value = keyValue[1].trim();
-                    // Handle strings
-                    if (value.startsWith('"') && value.endsWith('"')) {
-                        value = value.slice(1, -1);
-                    }    
-	                    parsedData[key] = value;  
+                    const key = keyValue[0];
+                    let value = keyValue[1]; 
+	                 finalData[key] = value;  
                 }
             }
-            return workingData;
+
+
         }
         
+        //multi_layer
+         function parseImperatorRomeSave_layer2(fileContents) {
+            const lines = fileContents;
+            let type = "";
+            let bracket = "";
+  			  let bracketLevel = 0;
+  			  let isRecording = 0;
+  			  let currentKey = '';
+  			  let record_line = [];
+  			  let resultData={};
+  			  
+            for (let line of lines) {		
+                line = line.trim(); 
+                bracketLevel = bracketChecker(line,bracketLevel);
+                if (line.includes('=')) {
+                   type = "value_assign";
+                }
+              if(line.includes('{')){
+					bracket = "open";
+				}else if(line.includes('}')){
+					bracket = "close"
+				}else{
+					bracket = "none";
+				} 
+				if(type=="value_assign"&&bracket=="open"&&bracketLevel==1){
+					const keyValue = line.split('=');
+					const key = keyValue[0];
+	              //finalData[key] = {};  
+	              currentKey = key;
+	              isRecording = 1;
+				}
+				if(isRecording ==1){
+					record_line.push(line); 
+				}
+				if(bracketLevel==1 && bracket=="close"){
+					isRecording==0;
+					resultData[currentKey] = record_line;
+					record_line = [];
+				}	
+				if (type=="value_assign"&& bracket=="none" && bracketLevel==0) {
+                    const keyValue = line.split('=');
+                    const key = keyValue[0];
+                    let value = keyValue[1]; 
+	                 resultData[key] = value;  
+                }
+            }
+				return resultData;
+
+        }
+
             
             
-            
-            
-			function bracketChecker(line,currentBraceCount){
+	function bracketChecker(line,currentBraceCount){
 				let openingBraceCount = 0;
 				let closingBraceCount = 0;
 				
@@ -71,98 +123,7 @@ $(document).ready(function() {
 				currentBraceCount= openingBraceCount-closingBraceCount+currentBraceCount;
 				return  currentBraceCount;
 			}
-            
-            function parserFactory(result){
-				let playerCountry_arry = [];
-				for (let key in result) {
-					if(key=='played_country'){	
-						let played_country = result[key];
-						finalData[key] = played_country_parser(played_country,playerCountry_arry);
-					}
-				}
-				let workingCountry ={};
-				for (let key in result) {
-					if(key=='country'){	
-						let country = result[key];
-						let country_final={};
-						workingCountry = parseImperatorRomeSave(country,country_final,'country');
-						workingCountry = parseImperatorRomeSave(workingCountry.country_database,country_final,'country');
-						for (let key in workingCountry) {
-								if(playerCountry_arry.includes(key)){
-									workingCountry[key] = country_parser(workingCountry[key]);
-								}else{
-									delete workingCountry[key];
-								}
-							}
-					}
-				}
-
-				return workingCountry;
-			}	
-			
-		function played_country_parser(array,playerCountry_arry) {
-		  const resultArray = array.map(entry => {
-		    const lines = entry.trim().split('\n');
-		    const result = {};
-		    lines.forEach(line => {
-		      const [key, value] = line.split('=');
-		      if (key && value) {
-		        const cleanKey = key.trim();
-		        let cleanValue = value.trim();
-		        if (cleanKey === 'name') {
-		          cleanValue = cleanValue.replace(/"/g, ''); // Remove quotes around the name
-		        }
-		        if(cleanKey ==='country'){
-					playerCountry_arry.push(cleanValue);
-				}
-		        result[cleanKey] = cleanValue;
-		      }
-		    });
-		    
-		    return { name: result.name, country: result.country };
-		  });
-		  
-		  return resultArray;
-		}
-		
-		function country_parser(data) {
-			let currency =['manpower','gold','stability','tyranny','war_exhaustion','aggressive_expansion','political_influence','military_experience','innovations']
-			let isCurrencyBracket = false;
-			let baseInfo =['total_holdings','total_population','tag','historical','heritage','religion','primary_culture','monthly_manpower','estimated_monthly_income','averaged_income','religious_unity','foreign_religion_pops','max_manpower','armies','navies','last_war','last_peace','loyal_cohorts','disloyal_cohorts','centralization','total_cohorts']
-			
-			
-	  const lines = data.trim().split('\n');
-	  const result = {};
-	  let techLevel =0;
-	  let progress = 0;
-	  lines.forEach(line => {
-	    const [key, value] = line.split('=');
-	    if (key && value) {
-	      const cleanKey = key.trim();
-	      let cleanValue = value.trim();
-	      if(cleanKey=='currency_data'){
-			  isCurrencyBracket=true;
-		  }else if(isCurrencyBracket&&line.includes('}')){
-			  isCurrencyBracket=false;
-		  }
-	      if(isCurrencyBracket&&currency.includes(key)){
-	      		result[cleanKey] = cleanValue; 
-	      }
-	      if(baseInfo.includes(key)){
-	      		result[cleanKey] = cleanValue.replace(/"/g, '');
-	      }
-	      if(key=='level'){
-	      		techLevel += parseFloat(cleanValue);
-	      }
-	      if(key=='progress'){
-	      		progress += parseFloat(cleanValue);
-	      }
-	    }
-	    result['average_tech'] = (techLevel+progress/100)/4 ;
-	  });
-	  return result;
-	}
-
+	
 			
  $('#fileInput').on('change', function(event) {
                 const file = event.target.files[0];
@@ -170,11 +131,15 @@ $(document).ready(function() {
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         const fileContents = e.target.result;
-                        let workingData = parseImperatorRomeSave(fileContents,finalData,'final');
-							result = parserFactory(workingData);
-							finalData['country_data'] = result;
-							console.log(finalData);
-							htmlAppender(finalData);
+                        
+                        parseImperatorRomeSave_layer1(fileContents);
+                       // console.log(finalData.armies);
+                        let result_data = parseImperatorRomeSave_layer2(finalData.armies);
+                         result_data = parseImperatorRomeSave_layer2(result_data.units_database);
+                         result_data = parseImperatorRomeSave_layer2(result_data[402654125]);
+							console.log(result_data);
+							//console.log(finalData);
+							//htmlAppender(finalData);
 							
                     };
                     reader.readAsText(file);
